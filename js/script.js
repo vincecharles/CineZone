@@ -31,13 +31,14 @@ async function fetchAPIData(endpoint, query) {
         }
 
         const data = await response.json();
+        console.log("API Response:", data); 
         hideSpinner();
         return data;
     } catch (error) {
         console.error("Error fetching data from API:", error);
         hideSpinner();
         showAlert("Failed to fetch data. Please try again later.");
-        return { results: [] }; // Return an empty result to prevent breaking the UI
+        return { results: [] }; 
     }
 }
 
@@ -148,12 +149,12 @@ function displaySearchResults(results) {
     div.classList.add("card");
     div.innerHTML = `
 
-    <a href="${global.search.type}-details.html?id=${result.id}">
+    <a href="${global.search.type}-details.html?id=${results.id}">
     ${
         result.poster_path
-          ? `<img src="https://image.tmdb.org/t/p/w500${result.poster_path}"
+          ? `<img src="https://image.tmdb.org/t/p/w500${results.poster_path}"
             class="card-img-top"
-            alt ="${global.search.type === "movie" ? result.title : result.name}"/>`
+            alt ="${global.search.type === "movie" ? result.title : results.name}"/>`
           : `<img
             src="./images/no-image.jpg"
             class="card-img-top"
@@ -162,12 +163,12 @@ function displaySearchResults(results) {
     </a>
     <div class="card-body">
       <h5 class="card-title">${ global.search.type ==="movie" ?
-      result.title : result.name} </h5>
+      results.title : results.name} </h5>
         <p class="card-text">
            <small class="text-muted"> Release: ${
            global.search.type === "movie"
-           ? result.release.date :
-              result.first_air_date }</small>
+           ? results.release.date :
+              results.first_air_date }</small>
             </p>
           </div>
     `;
