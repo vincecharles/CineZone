@@ -257,7 +257,7 @@ async function displayPopularMovies() {
 //Display 20 most popular tv shows
 async function displayPopularShows() {
     const  {results} = await fetchAPIData('tv/popular')
-    // console.log(results);
+    console.log(results);
 
     results.forEach((show) => {
         const div = document.createElement('div')
@@ -353,6 +353,71 @@ async function displayMovieDetails() {
     document.querySelector('#movie-details').appendChild(div);
 }
 
+// Display TV Shows Details
+async function displayTVShowsDetails() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const tvId = urlParams.get('id');
+  // console.log(tvId);
+
+  const tvDetails = await fetchAPIData(`tv/${tvId}`);
+  console.log(tvDetails);
+  const tvDetailshTML = `<div class = "details-top">
+    <div style = "background-image : url ('https://image.tmdb.org/t/p/original${tvDetails.backdrop_path
+    }'); background-size: cover; background-position; center center; background-repeat: no-repeat; height: 100vh; width: 100vw; position: absolute; top: 0px; left: 0px; z-index: -1; opacity: 0.1;">
+    </div>
+    <div>
+    ${
+        tvDetails.poster_path
+          ? `<img
+    src="https://image.tmdb.org/t/p/w500${tvDetails.poster_path}"
+    class="card-img-top"
+    alt="${tvDetails.original_name}"/>`
+    : ` <img
+    src="./images/no-image.jpg"
+      alt="${tvDetails.original_name}"
+    />`
+}
+          </div>
+         <div>
+         <h2>${tvDetails.original_name}</h2>
+         <p>
+              <i class="fas fa-star text-primary"></i>
+              ${tvDetails.vote_average.toFixed(1)} / 10
+            </p>
+            <p class="text-muted">Release Date: ${tvDetails.last_air_date}</p>
+            <p>
+            ${tvDetails.overview}
+            </p>
+            <h5>Genres</h5>
+            <ul class="list-group">
+              ${tvDetails.genres.map((genre) => `
+            <li>${genre.name}</li>`).join("")
+            }
+            </ul>
+            <a
+              href="${tvDetails.homepage}"
+              target="_blank"
+              class="btn"
+              >Visit Movie Homepage</a
+            >
+          </div>
+        </div>
+        <div class="details-bottom">
+                  <h2>Show Info</h2>
+          <ul>
+            <li><span class="text-secondary">Number Of Episodes:</span> ${tvDetails.number_of_episodes}</li>
+            <li>
+              <span class="text-secondary">Last Episode To Air:</span> ${tvDetails.last_episode_to_air.name}
+            </li>
+            <li><span class="text-secondary">Status:</span> ${tvDetails.status}</li>
+          </ul>
+          <h4>Production Companies</h4>
+          <div class="list-group">${tvDetails.production_companies.map ((company) => company.name)
+          .join(", ")}</div>
+        </div> `;
+        
+  document.querySelector('#show-details').innerHTML = tvDetailshTML;
+}
 
 
 
@@ -429,14 +494,3 @@ function init() {
 }
 
 document.addEventListener("DOMContentLoaded", init);
-document.querySelector("#search-form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    search();
-});
-document.querySelector("#search-term").addEventListener("input", (e) => {
-    global.search.term = e.target.value;
-});
-
-document.querySelector("#alert").addEventListener("click", () => {
-    document.querySelector("#alert").innerHTML = "";
-})
