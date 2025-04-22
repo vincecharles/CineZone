@@ -118,8 +118,8 @@ async function search() {
   global.search.term = urlParam.get('search-term');
   global.search.type = urlParam.get('type');
 
-  if (global.seearch.term !== "" && global.search.term !== null) {
-    const {results, total_pages, page, total_results} = await searchAPIData();
+  if (global.search.term !== "" && global.search.term !== null) {
+    const {results, total_pages, page, total_results} = await searchAPIDATA();
 
     global.search.page = page;
     global.search.total_pages = total_pages;
