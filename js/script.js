@@ -275,7 +275,7 @@ async function displayPopularMovies() {
 
 //Display 20 most popular tv shows
 async function displayPopularShows() {
-    const { results } = await fetchAPIData('tv/popular');
+    const { results } = await fetchAPIData("tv/popular");
     if (!results || results.length === 0) {
         console.warn("No TV shows found.");
         document.querySelector("#popular-shows").innerHTML = "<p>No TV shows available.</p>";
@@ -492,7 +492,7 @@ function init() {
         case "/":
         case "/index.html":
             console.log("Home");
-            displayPopularMovies()
+            displayPopularMovies();
             displayNowPlayingMovies();
 
             break;
