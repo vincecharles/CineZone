@@ -21,15 +21,24 @@ async function fetchAPIData(endpoint, query) {
 
     showSpinner();
 
-    const response = await fetch(
-      `${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US&query=${query}`
-  );
+    try {
+        const response = await fetch(
+            `${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US&query=${query}`
+        );
 
-    const data = await response.json()
+        if (!response.ok) {
+            throw new Error(`API request failed with status ${response.status}`);
+        }
 
-    hideSpinner();
-    return data
-
+        const data = await response.json();
+        hideSpinner();
+        return data;
+    } catch (error) {
+        console.error("Error fetching data from API:", error);
+        hideSpinner();
+        showAlert("Failed to fetch data. Please try again later.");
+        return { results: [] }; // Return an empty result to prevent breaking the UI
+    }
 }
 
 // alert
@@ -256,24 +265,29 @@ async function displayPopularMovies() {
 
 //Display 20 most popular tv shows
 async function displayPopularShows() {
-    const  {results} = await fetchAPIData('tv/popular')
-    console.log(results);
+    const { results } = await fetchAPIData('tv/popular');
+    if (!results || results.length === 0) {
+        console.warn("No TV shows found.");
+        document.querySelector("#popular-shows").innerHTML = "<p>No TV shows available.</p>";
+        return;
+    }
 
     results.forEach((show) => {
-        const div = document.createElement('div')
-        div.classList.add('card')
+        const div = document.createElement('div');
+        div.classList.add('card');
         div.innerHTML = `
-               
           <a href="tv-details.html?id=${show.id}">
           ${
-            show.poster_path ? `<img src="https://image.tmdb.org/t/p/w500${show.poster_path}"
-              class="card-img-top"
-              alt="${show.name}"
-            />` : `<img
-              src="./images/no-image.jpg"
-              class="card-img-top"
-              alt="${show.name}"
-            />` 
+            show.poster_path
+              ? `<img src="https://image.tmdb.org/t/p/w500${show.poster_path}"
+                class="card-img-top"
+                alt="${show.name}"
+              />`
+              : `<img
+                src="./images/no-image.jpg"
+                class="card-img-top"
+                alt="${show.name}"
+              />`
           } 
           </a>
           <div class="card-body">
@@ -282,10 +296,9 @@ async function displayPopularShows() {
               <small class="text-muted">Release: ${show.first_air_date}</small>
             </p>
           </div>
-       
         `;
         document.querySelector("#popular-shows").appendChild(div);
-    })
+    });
 }
 
 //Display Movie Details
