@@ -45,11 +45,20 @@ async function fetchAPIData(endpoint, query) {
 // alert
 function showAlert(message, timeout = 3000) {
   const alertDiv = document.querySelector("#alert");
-  const alertMsg = document.querySelector("div");
-  const pagination = document.querySelector(".pagination");
-  pagination.innerHTML = "";
+  if (!alertDiv) {
+    console.error("Alert container not found");
+    return;
+  }
+  
+  const alertMsg = document.createElement("div");
   alertMsg.classList.add("alert", "error");
   alertMsg.textContent = message;
+  
+  const pagination = document.querySelector(".pagination");
+  if (pagination) {
+    pagination.innerHTML = "";
+  }
+  
   alertDiv.appendChild(alertMsg);
   setTimeout(() => {
     alertMsg.remove();
