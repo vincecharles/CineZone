@@ -283,8 +283,8 @@ async function displayPopularShows() {
     }
 
     results.forEach((show) => {
-        const div = document.createElement('div');
-        div.classList.add('card');
+        const div = document.createElement("div");
+        div.classList.add("card");
         div.innerHTML = `
           <a href="tv-details.html?id=${show.id}">
           ${
