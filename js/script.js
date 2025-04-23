@@ -314,6 +314,8 @@ async function displayPopularShows() {
     });
 }
 
+
+
 //Display Movie Details
 async function displayMovieDetails() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -443,7 +445,7 @@ async function displayTVShowsDetails() {
           .join(", ")}</div>
         </div> `;
         
-  document.querySelector('#show-details').innerHTML = showHTML;
+  document.querySelector('#tv-details').innerHTML = showHTML;
 }
 
 
@@ -492,31 +494,32 @@ function highlightActiveLink() {
 
 //Init App
 function init() {
-    switch (global.currentPage) {
-        case "/":
-        case "/index.html":
-            console.log("Home");
-            displayPopularMovies();
-            displayNowPlayingMovies();
+    const path = window.location.pathname;
+    console.log("Current path:", path);
+    
 
-            break;
-        case "/shows.html":
-            displayPopularShows();
-            break;
-        case "/movie-details.html":
-            displayMovieDetails();
-
-            console.log("Movie Details");
-            break;
-        case "/tv-details.html":
-            console.log("TV Details");
-            displayTVShowsDetails();
-            break;
-        case "/search.html":
-            console.log("Search");
-            search();
-            break;              
+    if (path === '/' || path === '/index.html' || path.endsWith('index.html')) {
+        console.log("Home");
+        displayPopularMovies();
+        displayNowPlayingMovies();
+    } 
+    else if (path.includes('shows.html') || path.endsWith('/shows')) {
+        console.log("Shows page detected");
+        displayPopularShows();
     }
+    else if (path.includes('movie-details.html')) {
+        console.log("Movie Details");
+        displayMovieDetails();
+    }
+    else if (path.includes('tv-details.html')) {
+        console.log("TV Details");
+        displayTVShowsDetails();
+    }
+    else if (path.includes('search.html')) {
+        console.log("Search");
+        search();
+    }
+    
     highlightActiveLink();
 }
 
