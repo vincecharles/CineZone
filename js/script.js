@@ -147,7 +147,7 @@ async function search() {
 
 // Display Search results
 
-function displaySearchResults(results) {
+async function displaySearchResults(results) {
 
   document.querySelector("#search-results").innerHTML = "";
   document.querySelector("#search-results-heading").innerHTML = "";
@@ -189,7 +189,7 @@ function displaySearchResults(results) {
 }
 
 //Display Pagination
-function displayPagination() {
+async function displayPagination() {
   const div = document.createElement("div");
   div.classList.add("pagination");
   div.innerHTML = `
