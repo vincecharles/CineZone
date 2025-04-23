@@ -15,7 +15,7 @@ const global = {
 };
 
 //Fetch data from TMDB API
-async function fetchAPIData(endpoint, query) {
+async function fetchAPIData(endpoint) {
     const API_KEY = global.api.apiKey;
     const API_URL = global.api.apiURL;
 
@@ -23,7 +23,7 @@ async function fetchAPIData(endpoint, query) {
 
     try {
         const response = await fetch(
-            `${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US&query=${query}`
+            `${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`
         );
 
         if (!response.ok) {
@@ -117,13 +117,19 @@ ${
   <i class= "fas fa-star text-secondary"></i> ${movie.vote_average} / 10
 </h4>`;
 document.querySelector(".swiper-wrapper").appendChild(div);
+
+
 });
 }
+
+
 
 // Search
 
 async function search() {
+  const queryString = window.location.search;
   const urlParam = new URLSearchParams(window.location.search);
+
   global.search.term = urlParam.get('search-term');
   global.search.type = urlParam.get('type');
 
@@ -139,7 +145,7 @@ async function search() {
       return;
     }
     displaySearchResults(results);
-    document.querySelector("#search-term").value = "";
+    document.querySelector("#search-term").value = '';
   } else {
     showAlert("Please enter a search term");
   }
@@ -147,7 +153,7 @@ async function search() {
 
 // Display Search results
 
-async function displaySearchResults(results) {
+ function displaySearchResults(results) {
 
   document.querySelector("#search-results").innerHTML = "";
   document.querySelector("#search-results-heading").innerHTML = "";
@@ -375,47 +381,48 @@ async function displayMovieDetails() {
 
 // Display TV Shows Details
 async function displayTVShowsDetails() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const tvId = urlParams.get("id");
+  const showId = window.location.search.split('=')[1];
+
+  
   // console.log(tvId);
 
-  const tvDetails = await fetchAPIData(`tv/${tvId}`);
-  console.log(tvDetails);
-  const tvDetailshTML = `<div class = "details-top">
-    <div style = "background-image : url ('https://image.tmdb.org/t/p/original${tvDetails.backdrop_path
+  const show = await fetchAPIData(`tv/${showId}`);
+  console.log(show);
+  const showHTML = `<div class = "details-top">
+    <div style = "background-image : url ('https://image.tmdb.org/t/p/original${show.backdrop_path
     }'); background-size: cover; background-position; center center; background-repeat: no-repeat; height: 100vh; width: 100vw; position: absolute; top: 0px; left: 0px; z-index: -1; opacity: 0.1;">
     </div>
     <div>
     ${
-        tvDetails.poster_path
+        show.poster_path
           ? `<img
-    src="https://image.tmdb.org/t/p/w500${tvDetails.poster_path}"
+    src="https://image.tmdb.org/t/p/w500${show.poster_path}"
     class="card-img-top"
-    alt="${tvDetails.original_name}"/>`
+    alt="${show.original_name}"/>`
     : ` <img
     src="./images/no-image.jpg"
-      alt="${tvDetails.original_name}"
+      alt="${show.original_name}"
     />`
 }
           </div>
          <div>
-         <h2>${tvDetails.original_name}</h2>
+         <h2>${show.original_name}</h2>
          <p>
               <i class="fas fa-star text-primary"></i>
-              ${tvDetails.vote_average.toFixed(1)} / 10
+              ${show.vote_average.toFixed(1)} / 10
             </p>
-            <p class="text-muted">Release Date: ${tvDetails.last_air_date}</p>
+            <p class="text-muted">Release Date: ${show.last_air_date}</p>
             <p>
-            ${tvDetails.overview}
+            ${show.overview}
             </p>
             <h5>Genres</h5>
             <ul class="list-group">
-              ${tvDetails.genres.map((genre) => `
+              ${show.genres.map((genre) => `
             <li>${genre.name}</li>`).join("")
             }
             </ul>
             <a
-              href="${tvDetails.homepage}"
+              href="${show.homepage}"
               target="_blank"
               class="btn"
               >Visit Movie Homepage</a
@@ -425,18 +432,18 @@ async function displayTVShowsDetails() {
         <div class="details-bottom">
                   <h2>Show Info</h2>
           <ul>
-            <li><span class="text-secondary">Number Of Episodes:</span> ${tvDetails.number_of_episodes}</li>
+            <li><span class="text-secondary">Number Of Episodes:</span> ${show.number_of_episodes}</li>
             <li>
-              <span class="text-secondary">Last Episode To Air:</span> ${tvDetails.last_episode_to_air.name}
+              <span class="text-secondary">Last Episode To Air:</span> ${show.last_episode_to_air.name}
             </li>
-            <li><span class="text-secondary">Status:</span> ${tvDetails.status}</li>
-          </ul>
+            <li><span class="text-secondary">Status:</span> ${show.status}</li> 
+          </ul> 
           <h4>Production Companies</h4>
-          <div class="list-group">${tvDetails.production_companies.map ((company) => company.name)
+          <div class="list-group">${show.production_companies.map ((company) => company.name)
           .join(", ")}</div>
         </div> `;
         
-  document.querySelector('#show-details').innerHTML = tvDetailshTML;
+  document.querySelector('#show-details').innerHTML = showHTML;
 }
 
 
