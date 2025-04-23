@@ -200,6 +200,12 @@ section h4 {
   height: 50%;
 }
 
+/* Enhanced Swiper Styles */
+.swiper {
+  padding: 30px 10px 50px;
+  overflow: hidden;
+}
+
 .swiper-slide {
   text-align: center;
   font-size: 18px;
@@ -208,6 +214,85 @@ section h4 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #111;
+  position: relative;
+  height: auto;
+}
+
+.swiper-slide:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  transition: opacity 0.3s ease;
+}
+
+.swiper-slide:hover img {
+  opacity: 0.7;
+}
+
+.swiper-rating {
+  padding: 10px;
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 5px 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.swiper-title {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  color: #fff;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  margin: 0;
+  text-align: center;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #e50914 !important;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 30px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.swiper-pagination-bullet {
+  background: #e50914;
+  opacity: 0.5;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
 }
 
 .swiper-slide img {
@@ -219,164 +304,4 @@ section h4 {
 
 .swiper-rating {
   padding: 10px;
-}
-
-/* Movie Details */
-.details-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 50px 0 30px;
-}
-
-.details-top img {
-  width: 400px;
-  height: 100%;
-  margin-right: 60px;
-  object-fit: cover;
-}
-
-.details-top p {
-  margin: 20px 0;
-}
-
-.details-top .btn {
-  margin-top: 20px;
-}
-
-.details-bottom {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start; 
-}
-
-.details-bottom h2 {
-  margin-bottom: 10px;
-  text-align: center;
-  justify-content: center;
-  display: flex;
-}
-
-.details-bottom ul {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  width: 100%;
-  max-width: 400px;
-  padding: 20px;
-  position: relative;
-}
-
-.details-bottom h4 {
-  align-self: flex-end;
-  margin-bottom: 10px;
-}
-
-.details-bottom .list-group {
-  align-self: flex-end; 
-  text-align: right;
-  justify-content: flex-end;
-  display: flex;
-}
-
-.details-bottom li {
-  margin: 15px 0;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #fff;
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Search */
-.search {
-  padding: 60px;
-  margin-bottom: 40px;
-}
-
-.search .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.search .container h2 {
-  margin-bottom: 20px;
-}
-
-.search .container form {
-  width: 100%;
-  max-width: 600px;
-}
-
-.search-radio label {
-  margin-right: 15px;
-}
-
-.search-flex {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.search .container form input[type='text'] {
-  flex: 6;
-  width: 100%;
-  height: 50px;
-  padding: 10px;
-  margin-right: 10px;
-  border: 1px solid #fff;
-  border-radius: 5px;
-  background: transparent;
-  color: #fff;
-}
-
-.search .container form input[type='text']::placeholder {
-  color: #fff;
-}
-
-.search .container form input[type='text']:focus {
-  outline: none;
-}
-
-.search .container form button {
-  flex: 1;
-  display: block;
-  width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  height: 50px;
-  cursor: pointer;
-  background: var(--color-secondary);
-  color: #000;
-}
-
-.search .container form button:hover {
-  background: transparent;
-  color: #fff;
-}
-
-.pagination {
-  margin-top: 20px;
-}
-
-.page-counter {
-  margin-top: 10px;
-}
-
-/* Alert */
-.alert {
-  background: red;
-  padding: 10px 20px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-}
-
-.alert-success {
-  background: green;
-}
-
-.alert-error {
-  background: red;
 }

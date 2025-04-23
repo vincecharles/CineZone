@@ -65,64 +65,80 @@ function showAlert(message, timeout = 3000) {
   }, timeout);
 }
 
-//Spinner
-
+//Swiper
 async function displayNowPlayingMovies() {
-
-const {results} = await fetchAPIData('movie/now_playing');
-// console.log(results);
-results.forEach((movie) => {
-const swiper = new Swiper('.swiper', {
-  slidesPerView: 4,
-  spaceBetween: 25,
-  direction: 'horizontal',
-  loop: true,
-  speed: 800,
-  effect: 'slide',
-  grabCursor: true,
-  centeredSlides: true,
-  autoplay: {
-    delay: 3000,
-    disableOnInteraction: false,
-  },
-  pagination: {
-    el: '.swiper-pagination',
-    clickable: true,
-  },
-  navigation: { 
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',  
-  },
-
-  scrollbar: {
-    el: '.swiper-scrollbar',
-  },
-});
-const div = document.createElement('div');
-div.classList.add('swiper-slide');
-div.innerHTML = ` <a href="movie-details.html?id=${movie.id}">
-
-${
-    movie.poster_path
-    ? `<img src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
-    class="card-img-top"
-    alt="${movie.title}"/> `
-    : ` <img
-    src="./images/no-image.jpg"
-    class="card-img-top"
-/>`
+  const {results} = await fetchAPIData('movie/now_playing');
+  
+  // Create swiper slides first
+  results.forEach((movie) => {
+    const div = document.createElement('div');
+    div.classList.add('swiper-slide');
+    div.innerHTML = `
+      <a href="movie-details.html?id=${movie.id}">
+        ${
+          movie.poster_path
+            ? `<img src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
+              class="card-img-top"
+              alt="${movie.title}"/> `
+            : `<img
+              src="./images/no-image.jpg"
+              class="card-img-top"
+              alt="No image available"
+            />`
+        }
+      </a>
+      <div class="swiper-rating">
+        <i class="fas fa-star text-secondary"></i> ${movie.vote_average.toFixed(1)} / 10
+      </div>
+      <h4 class="swiper-title">${movie.title}</h4>
+    `;
+    document.querySelector(".swiper-wrapper").appendChild(div);
+  });
+  
+  // Initialize swiper after all slides are added
+  const swiper = new Swiper('.swiper', {
+    slidesPerView: 1,
+    spaceBetween: 30,
+    loop: true,
+    effect: 'coverflow',
+    coverflowEffect: {
+      rotate: 50,
+      stretch: 0,
+      depth: 100,
+      modifier: 1,
+      slideShadows: true,
+    },
+    centeredSlides: true,
+    autoplay: {
+      delay: 3000,
+      disableOnInteraction: false,
+      pauseOnMouseEnter: true,
+    },
+    speed: 1000,
+    grabCursor: true,
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+      dynamicBullets: true,
+    },
+    navigation: { 
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',  
+    },
+    breakpoints: {
+      640: {
+        slidesPerView: 2,
+      },
+      768: {
+        slidesPerView: 3,
+      },
+      1024: {
+        slidesPerView: 4,
+        spaceBetween: 25,
+      },
+    },
+  });
 }
-</a>
-<h4 class = "swiper-rating>
-  <i class= "fas fa-star text-secondary"></i> ${movie.vote_average} / 10
-</h4>`;
-document.querySelector(".swiper-wrapper").appendChild(div);
-
-
-});
-}
-
-
 
 // Search
 
