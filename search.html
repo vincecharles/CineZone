@@ -68,22 +68,20 @@
       <div class="container">
         <div id="alert"></div>
         <form action="./search.html" class="search-form">
-          <div class="search-radio">
-            <input type="radio" id="movie" name="type" value="movie" checked />
-            <label for="movie">Movies</label>
-            <input type="radio" id="tv" name="type" value="tv" />
-            <label for="tv">TV Shows</label>
-          </div>
-          <div class="search-flex">
+          <div class="search-wrapper">
             <input
               type="text"
               name="search-term"
               id="search-term"
-              placeholder="Enter search term"
+              placeholder="Search for movies or TV shows..."
             />
-            <button class="btn" type="submit">
-              <i class="fas fa-search"></i>
-            </button>
+            <div class="search-options">
+              <label><input type="radio" id="movie" name="type" value="movie" checked /><span>Movies</span></label>
+              <label><input type="radio" id="tv" name="type" value="tv" /><span>TV Shows</span></label>
+              <button class="btn" type="submit">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
           </div>
         </form>
       </div>
