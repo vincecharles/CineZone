@@ -153,17 +153,17 @@ async function search() {
 
 // Display Search results
 
- function displaySearchResults(results) {
-
+function displaySearchResults(results) {
   document.querySelector("#search-results").innerHTML = "";
   document.querySelector("#search-results-heading").innerHTML = "";
   document.querySelector("#pagination").innerHTML = "";
+
+  console.log("Search results:", results); // Debug log
 
   results.forEach((result) => {
     const div = document.createElement("div");
     div.classList.add("card");
     div.innerHTML = `
-
     <a href="${global.search.type}-details.html?id=${result.id}">
     ${
         result.poster_path
@@ -177,19 +177,21 @@ async function search() {
     }
     </a>
     <div class="card-body">
-      <h5 class="card-title">${ global.search.type ==="movie" ?
-      result.title : result.name} </h5>
+      <h5 class="card-title">${global.search.type === "movie" ? result.title : result.name}</h5>
         <p class="card-text">
-           <small class="text-muted"> Release: ${
+           <small class="text-muted">Release: ${
            global.search.type === "movie"
-           ? result.release.date :
-              result.first_air_date }</small>
+           ? (result.release_date || 'N/A') :
+           (result.first_air_date || 'N/A')}</small>
             </p>
           </div>
     `;
-    document.querySelector("#search-results-heading").innerHTML = `<h2> ${results.length} OF ${global.search.totalResults} RESULTS FOR ${global.search.term} </h2> ` ; 
+    
     document.querySelector("#search-results").appendChild(div);
   });
+  
+  document.querySelector("#search-results-heading").innerHTML = 
+    `<h2>${results.length} OF ${global.search.total_results || 0} RESULTS FOR ${global.search.term}</h2>`;
   
   displayPagination();
 }
@@ -231,18 +233,27 @@ async function searchAPIDATA() {
   const API_URL = global.api.apiURL;
 
   showSpinner();
+  
+  try {
+    const response = await fetch(
+      `${API_URL}search/${global.search.type}?api_key=${API_KEY}&language=en-US&query=${global.search.term}&page=${global.search.page}&include_adult=false`
+    );
 
-  const response = await fetch(
-    `${API_URL}search/${global.search.type}?api_key=${API_KEY}&language=en-US&query=${global.search.term}&page=${global.search.page}&include_adult=false`
-);
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
 
-  const data = await response.json()
-
-  hideSpinner();
-  return data
-
+    const data = await response.json();
+    console.log("Search API response:", data);
+    hideSpinner();
+    return data;
+  } catch (error) {
+    console.error("Error searching API:", error);
+    hideSpinner();
+    showAlert("Failed to perform search. Please try again later.");
+    return { results: [], total_pages: 0, page: 1, total_results: 0 };
+  }
 }
-
 
 //Display popular movies
 async function displayPopularMovies() {
