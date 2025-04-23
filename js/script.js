@@ -159,17 +159,17 @@ async function search() {
   document.querySelector("#search-results-heading").innerHTML = "";
   document.querySelector("#pagination").innerHTML = "";
 
-  results.forEach((results) => {
+  results.forEach((result) => {
     const div = document.createElement("div");
     div.classList.add("card");
     div.innerHTML = `
 
-    <a href="${global.search.type}-details.html?id=${results.id}">
+    <a href="${global.search.type}-details.html?id=${result.id}">
     ${
         result.poster_path
-          ? `<img src="https://image.tmdb.org/t/p/w500${results.poster_path}"
+          ? `<img src="https://image.tmdb.org/t/p/w500${result.poster_path}"
             class="card-img-top"
-            alt ="${global.search.type === "movie" ? result.title : results.name}"/>`
+            alt ="${global.search.type === "movie" ? result.title : result.name}"/>`
           : `<img
             src="./images/no-image.jpg"
             class="card-img-top"
@@ -178,12 +178,12 @@ async function search() {
     </a>
     <div class="card-body">
       <h5 class="card-title">${ global.search.type ==="movie" ?
-      results.title : results.name} </h5>
+      result.title : result.name} </h5>
         <p class="card-text">
            <small class="text-muted"> Release: ${
            global.search.type === "movie"
-           ? results.release.date :
-              results.first_air_date }</small>
+           ? result.release.date :
+              result.first_air_date }</small>
             </p>
           </div>
     `;
@@ -233,7 +233,7 @@ async function searchAPIDATA() {
   showSpinner();
 
   const response = await fetch(
-    `${API_URL}search/${global.search.type}?api_key=${API_KEY}&language=en-US$query=${global.search.term}&page=${global.search.page}&include_adult=false`
+    `${API_URL}search/${global.search.type}?api_key=${API_KEY}&language=en-US&query=${global.search.term}&page=${global.search.page}&include_adult=false`
 );
 
   const data = await response.json()
